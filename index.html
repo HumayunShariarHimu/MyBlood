@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blood Group Compatibility Checker</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#ff4d4d,#b30000);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    background:white;
+    max-width:600px;
+    width:100%;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+h1{
+    text-align:center;
+    color:#b30000;
+    margin-bottom:20px;
+}
+
+select{
+    width:100%;
+    padding:12px;
+    border:2px solid #b30000;
+    border-radius:8px;
+    font-size:16px;
+    margin-bottom:20px;
+}
+
+.result{
+    display:none;
+    margin-top:20px;
+}
+
+.card{
+    background:#f7f7f7;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:15px;
+    border-left:5px solid #b30000;
+}
+
+.card h3{
+    color:#b30000;
+    margin-bottom:10px;
+}
+
+ul{
+    padding-left:20px;
+}
+
+li{
+    margin:5px 0;
+    font-weight:bold;
+}
+
+.footer{
+    text-align:center;
+    margin-top:20px;
+    color:#666;
+    font-size:14px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🩸 Blood Group Checker</h1>
+
+    <select id="bloodGroup">
+        <option value="">রক্তের গ্রুপ নির্বাচন করুন</option>
+        <option>A+</option>
+        <option>A-</option>
+        <option>B+</option>
+        <option>B-</option>
+        <option>AB+</option>
+        <option>AB-</option>
+        <option>O+</option>
+        <option>O-</option>
+    </select>
+
+    <div class="result" id="result">
+        <div class="card">
+            <h3>রক্ত দিতে পারবে</h3>
+            <ul id="donateTo"></ul>
+        </div>
+
+        <div class="card">
+            <h3>রক্ত নিতে পারবে</h3>
+            <ul id="receiveFrom"></ul>
+        </div>
+    </div>
+
+    <div class="footer">
+        Humayun Shariar Himu 
+    </div>
+</div>
+
+<script>
+const bloodData = {
+    "A+": {
+        donateTo: ["A+","AB+"],
+        receiveFrom: ["A+","A-","O+","O-"]
+    },
+    "A-": {
+        donateTo: ["A+","A-","AB+","AB-"],
+        receiveFrom: ["A-","O-"]
+    },
+    "B+": {
+        donateTo: ["B+","AB+"],
+        receiveFrom: ["B+","B-","O+","O-"]
+    },
+    "B-": {
+        donateTo: ["B+","B-","AB+","AB-"],
+        receiveFrom: ["B-","O-"]
+    },
+    "AB+": {
+        donateTo: ["AB+"],
+        receiveFrom: ["A+","A-","B+","B-","AB+","AB-","O+","O-"]
+    },
+    "AB-": {
+        donateTo: ["AB+","AB-"],
+        receiveFrom: ["A-","B-","AB-","O-"]
+    },
+    "O+": {
+        donateTo: ["O+","A+","B+","AB+"],
+        receiveFrom: ["O+","O-"]
+    },
+    "O-": {
+        donateTo: ["A+","A-","B+","B-","AB+","AB-","O+","O-"],
+        receiveFrom: ["O-"]
+    }
+};
+
+const bloodGroup = document.getElementById("bloodGroup");
+const result = document.getElementById("result");
+const donateTo = document.getElementById("donateTo");
+const receiveFrom = document.getElementById("receiveFrom");
+
+bloodGroup.addEventListener("change", () => {
+    const group = bloodGroup.value;
+
+    if(!group){
+        result.style.display = "none";
+        return;
+    }
+
+    donateTo.innerHTML = "";
+    receiveFrom.innerHTML = "";
+
+    bloodData[group].donateTo.forEach(item=>{
+        donateTo.innerHTML += `<li>${item}</li>`;
+    });
+
+    bloodData[group].receiveFrom.forEach(item=>{
+        receiveFrom.innerHTML += `<li>${item}</li>`;
+    });
+
+    result.style.display = "block";
+});
+</script>
+
+</body>
+</html>
